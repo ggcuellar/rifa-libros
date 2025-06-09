@@ -38,21 +38,22 @@ export default function App() {
       <p className="text-sm mb-4">Participa completando el formulario. ¡Buena suerte!</p>
 
       {/* Galería de libros */}
-      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2 p-2">
+     <div className="grid grid-cols-3 gap-2 p-2 max-w-sm mx-auto">
   {libros.map(libro => (
     <div
       key={libro.id}
-      className="bg-white border rounded-lg p-1 shadow-sm flex flex-col items-center text-center"
+      className="flex flex-col items-center bg-white rounded-lg shadow p-1"
     >
       <img
         src={libro.imagen}
         alt={libro.titulo}
         className="w-16 h-16 object-cover rounded mb-1"
       />
-      <p className="text-[10px] leading-tight">{libro.titulo}</p>
+      <p className="text-[10px] text-center leading-tight">{libro.titulo}</p>
     </div>
   ))}
 </div>
+
 
       {/* Formulario */}
       <form onSubmit={handleSubmit} className="space-y-3">
