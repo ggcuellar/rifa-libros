@@ -1,3 +1,4 @@
+// Rifa de biblioteca - App en React + TailwindCSS conectada a Supabase
 import { useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
 
@@ -49,6 +50,17 @@ export default function App() {
       <p className="text-xs">{libro.titulo}</p>
     </div>
   ))}
+</div>
+
+{/* Información de pago */}
+<div className="my-6 text-center">
+  <p className="text-sm font-semibold mb-2">Valor por boleta: <span className="text-green-600">$50.000 COP</span></p>
+  <img
+    src="/qr_pago.png"
+    alt="Código QR para pago"
+    className="mx-auto w-40 h-40 object-contain border p-2 rounded"
+  />
+  <p className="text-xs text-gray-600 mt-1">Para realizar el pago, escanea este código desde la App de cualquier entidad habilitada</p>
 </div>
 
       {/* Formulario */}
