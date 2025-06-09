@@ -34,7 +34,7 @@ export default function App() {
   return (
     <div className="max-w-md mx-auto p-4 text-center font-sans">
       <img src="/logo.png" alt="Logo" className="mx-auto w-24 mb-2" />
-      <h1 className="text-2xl font-bold mb-2">🎁 Rifa de 30 Libros</h1>
+      <h1 className="text-2xl font-bold mb-2">🎁 Rifa de Biblioteca de Masonería</h1>
       <p className="text-sm mb-4">Participa completando el formulario. ¡Buena suerte!</p>
 
       {/* Galería de libros */}
