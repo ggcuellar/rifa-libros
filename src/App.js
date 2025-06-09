@@ -17,20 +17,37 @@ export default function App() {
   const [form, setForm] = useState({ nombre: '', correo: '', boleto: '' });
   const [mensaje, setMensaje] = useState('');
 
-  const handleChange = e => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
   const handleSubmit = async e => {
-    e.preventDefault();
-    const { error } = await supabase.from('Participantes').insert([form]);
-    if (error) {
-      setMensaje('❌ Error al registrar. Intenta con otro número de boleto.');
-    } else {
-      setMensaje('✅ Participación registrada con éxito.');
-      setForm({ nombre: '', correo: '', boleto: '' });
-    }
-  };
+  e.preventDefault();
+
+  // 1. Validar si el boleto ya fue usado
+  const { data: existentes, error: errorConsulta } = await supabase
+    .from('Participantes')
+    .select('boleto, estado')
+    .eq('boleto', form.boleto);
+
+  if (errorConsulta) {
+    setMensaje('⚠️ Error al verificar disponibilidad. Intenta nuevamente.');
+    return;
+  }
+
+  if (existentes.length > 0) {
+    setMensaje('🚫 Este número de boleto ya está en uso o en espera de confirmación.');
+    return;
+  }
+
+  // 2. Insertar el nuevo registro como pendiente
+  const { error } = await supabase
+    .from('Participantes')
+    .insert([{ ...form, estado: 'pendiente' }]);
+
+  if (error) {
+    setMensaje('❌ Error al registrar. Intenta con otro número de boleto.');
+  } else {
+    setMensaje('✅ Participación registrada. Esperando confirmación de pago.');
+    setForm({ nombre: '', correo: '', boleto: '' });
+  }
+};
 
   return (
    <div className="max-w-md mx-auto p-4 text-center font-sans overflow-y-auto max-h-[95vh]">
