@@ -68,19 +68,21 @@ export default function App() {
       <h1 className="text-3xl font-bold mb-2">🎁 Rifa de 30 libros</h1>
       <p className="mb-6">Participa llenando el siguiente formulario. ¡Buena suerte!</p>
 
-<div className="grid grid-cols-3 gap-2 p-2 overflow-y-auto max-h-[80vh]">
+<div className="grid grid-cols-4 sm:grid-cols-5 gap-1 max-h-[60vh] overflow-y-auto px-1">
   {libros.map(libro => (
-    <div key={libro.id} className="border rounded-lg p-1 shadow-sm flex flex-col items-center text-center bg-white">
+    <div
+      key={libro.id}
+      className="border rounded-md p-1 shadow-sm bg-white flex flex-col items-center"
+    >
       <img
         src={libro.imagen}
         alt={libro.titulo}
-        className="w-20 h-20 object-cover rounded mb-1"
+        className="w-14 h-14 object-cover rounded"
       />
-      <p className="text-xs leading-tight">{libro.titulo}</p>
+      <p className="text-[10px] mt-1 text-center">{libro.titulo}</p>
     </div>
   ))}
 </div>
-
 
 
       <form onSubmit={handleSubmit} className="bg-gray-100 p-4 rounded-xl shadow mb-4 text-left">
