@@ -22,7 +22,7 @@ export default function App() {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    const { data, error } = await supabase.from('Participantes').insert([form]);
+    const { error } = await supabase.from('Participantes').insert([form]);
     if (error) {
       setMensaje('❌ Error al registrar. Intenta con otro número de boleto.');
     } else {
