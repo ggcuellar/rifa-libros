@@ -4,7 +4,7 @@ import { createClient } from '@supabase/supabase-js';
 // Configura tu Supabase
 const supabase = createClient('https://peunuxjyxjajrwybwlnj.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBldW51eGp5eGphanJ3eWJ3bG5qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkyNzIwMTksImV4cCI6MjA2NDg0ODAxOX0.JXn4Y-1QJRhTGIVy4o5wQFa4QR9PP92LxLo1lygGHeQ');
 
-const totalLibrosConImagen = 6; // Cambia este valor según vayas subiendo más imágenes
+const totalLibrosConImagen = 2; // Cambia este valor según vayas subiendo más imágenes
 
 const libros = Array.from({ length: totalLibrosConImagen }, (_, i) => ({
   id: i + 1,
