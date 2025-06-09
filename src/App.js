@@ -32,20 +32,20 @@ export default function App() {
   };
 
   return (
-    <div className="max-w-md mx-auto p-4 text-center font-sans">
+   <div className="max-w-md mx-auto p-4 text-center font-sans overflow-y-auto max-h-[95vh]">
       <img src="/logo.png" alt="Logo" className="mx-auto w-24 mb-2" />
       <h1 className="text-2xl font-bold mb-2">🎁 Rifa de Biblioteca de Masonería</h1>
       <p className="text-sm mb-4">Participa completando el formulario. ¡Buena suerte!</p>
 
       {/* Galería de libros */}
-   <div className="grid grid-cols-3 gap-2 p-4 max-w-xl mx-auto">
+   <div className="grid grid-cols-3 gap-2 p-2">
   {libros.map(libro => (
     <div key={libro.id} className="border rounded shadow-sm p-2 bg-white flex flex-col items-center text-center">
       <img
-        src={libro.imagen}
-        alt={libro.titulo}
-        className="w-24 h-24 object-cover rounded mb-1"
-      />
+  src={libro.imagen}
+  alt={libro.titulo}
+  className="w-20 h-20 object-cover rounded mb-1"
+/>
       <p className="text-xs">{libro.titulo}</p>
     </div>
   ))}
