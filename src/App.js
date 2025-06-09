@@ -9,7 +9,7 @@ const totalLibrosConImagen = 2; // Cambia este valor según vayas subiendo más 
 const libros = Array.from({ length: totalLibrosConImagen }, (_, i) => ({
   id: i + 1,
   titulo: `Libro ${i + 1}`,
-  imagen: `/Libros/Libro${i + 1}.jpg`
+  imagen: `/Libros/Libro${i + 1}.jpg?${Date.now()}`
 }));
 
 export default function App() {
