@@ -16,6 +16,7 @@ const libros = Array.from({ length: totalLibrosConImagen }, (_, i) => ({
 export default function App() {
   const [form, setForm] = useState({ nombre: '', correo: '', boleto: '' });
   const [mensaje, setMensaje] = useState('');
+  const [boletosOcupados, setBoletosOcupados] = useState([]);
 
   const handleSubmit = async e => {
   e.preventDefault();
@@ -46,8 +47,34 @@ export default function App() {
   } else {
     setMensaje('✅ Participación registrada. Esperando confirmación de pago.');
     setForm({ nombre: '', correo: '', boleto: '' });
+    obtenerBoletos(); // 🔄 Actualiza los boletos disponibles
   }
 };
+
+import { useEffect } from 'react';
+
+// useState adicionales
+const [numerosDisponibles, setNumerosDisponibles] = useState([]);
+const [loadingBoletos, setLoadingBoletos] = useState(true);
+
+const obtenerBoletos = async () => {
+    const todos = Array.from({ length: 100 }, (_, i) => i.toString().padStart(2, '0'));
+    const { data, error } = await supabase.from('Participantes').select('boleto');
+
+    if (error) {
+      console.error('Error al obtener boletos ocupados', error);
+      return;
+    }
+
+    const ocupados = data.map(entry => entry.boleto);
+    const disponibles = todos.filter(num => !ocupados.includes(num));
+    setNumerosDisponibles(disponibles);
+    setLoadingBoletos(false);
+  };
+
+useEffect(() => {
+  obtenerBoletos();
+}, []);
 
   return (
    <div className="max-w-md mx-auto p-4 text-center font-sans overflow-y-auto max-h-[95vh]">
@@ -60,14 +87,14 @@ export default function App() {
   {libros.map(libro => (
     <div key={libro.id} className="border rounded shadow-sm p-2 bg-white flex flex-col items-center text-center">
       <img
-  src={libro.imagen}
-  alt={libro.titulo}
-  className="w-20 h-20 object-cover rounded mb-1"
-/>
+        src={libro.imagen}
+        alt={libro.titulo}
+        className="w-20 h-20 object-cover rounded mb-1"
+      />
       <p className="text-xs">{libro.titulo}</p>
     </div>
-  ))}
-</div>
+    ))}
+    </div>
 
 {/* Información de pago */}
 <div className="my-6 text-center">
@@ -82,39 +109,62 @@ export default function App() {
 
       {/* Formulario */}
       <form onSubmit={handleSubmit} className="space-y-3">
-        <input
-          type="text"
-          name="nombre"
-          value={form.nombre}
-          onChange={handleChange}
-          placeholder="Tu nombre"
-          required
-          className="w-full border p-2 rounded text-sm"
-        />
-        <input
-          type="email"
-          name="correo"
-          value={form.correo}
-          onChange={handleChange}
-          placeholder="Correo electrónico"
-          required
-          className="w-full border p-2 rounded text-sm"
-        />
-        <input
-          type="number"
-          name="boleto"
-          value={form.boleto}
-          onChange={handleChange}
-          placeholder="Número de boleto (1-30)"
-          required
-          min="1"
-          max="30"
-          className="w-full border p-2 rounded text-sm"
-        />
-        <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded font-semibold">
-          Participar
-        </button>
-      </form>
+  <input
+    type="text"
+    name="nombre"
+    value={form.nombre}
+    onChange={handleChange}
+    placeholder="Tu nombre"
+    required
+    className="w-full border p-2 rounded text-sm"
+  />
+  <input
+    type="email"
+    name="correo"
+    value={form.correo}
+    onChange={handleChange}
+    placeholder="Correo electrónico"
+    required
+    className="w-full border p-2 rounded text-sm"
+  />
+
+  {/* Selección de número de boleto */}
+  <div className="mb-4">
+    <p className="mb-2 font-semibold text-sm">Selecciona tu número de boleto:</p>
+    {loadingBoletos ? (
+      <p className="text-sm text-gray-500">Cargando boletos disponibles...</p>
+    ) : (
+      <div className="grid grid-cols-5 gap-2 max-h-60 overflow-y-auto">
+        {Array.from({ length: 100 }, (_, i) => {
+          const num = i.toString().padStart(2, '0');
+          const ocupado = !numerosDisponibles.includes(num);
+
+          return (
+            <button
+              key={num}
+              type="button"
+              disabled={ocupado}
+              className={`text-sm p-2 rounded border transition ${
+                form.boleto === num
+                  ? 'bg-blue-600 text-white'
+                  : ocupado
+                  ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
+                  : 'bg-white hover:bg-blue-100'
+              }`}
+              onClick={() => !ocupado && setForm({ ...form, boleto: num })}
+            >
+              {num}
+            </button>
+          );
+        })}
+      </div>
+    )}
+  </div>
+
+  <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded font-semibold">
+    Participar
+  </button>
+</form>
 
       {mensaje && <p className="mt-4 text-sm text-center">{mensaje}</p>}
     </div>
