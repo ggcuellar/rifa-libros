@@ -68,7 +68,12 @@ export default function App() {
   if (error) {
     setMensaje('❌ Error al registrar. Intenta con otro número de boleto.');
   } else {
-    setMensaje('✅ Participación registrada. Esperando confirmación de pago.');
+    setMensaje(
+  `✅ Participación registrada. 
+  Para confirmar tu inscripción, por favor envía el comprobante de pago al correo: ggcuellarj@yahoo.com.mx indicando tu nombre completo y el número de boleta seleccionado (${form.boleto}). 
+  Recibirás una confirmación cuando se verifique el pago.`
+);
+
     setForm({ nombre: '', correo: '', boleto: '' });
     obtenerBoletos(); // 🔄 Actualiza los boletos disponibles
   }
