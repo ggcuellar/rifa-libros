@@ -31,11 +31,11 @@ export default function App() {
 
     if (error) {
       console.error('Error al obtener boletos ocupados', error);
-      setLoadingBoletos(false); // <- aseguras que el loading se detenga
+      setLoadingBoletos(false); 
       return;
     }
 
-    const ocupados = data.map(entry => entry.boleto);
+    const ocupados = (data ?? []).map(entry => entry.boleto); // aseguramos que sea array
     const disponibles = todos.filter(num => !ocupados.includes(num));
     setNumerosDisponibles(disponibles);
     setLoadingBoletos(false);
