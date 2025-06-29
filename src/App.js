@@ -16,7 +16,6 @@ const libros = Array.from({ length: totalLibrosConImagen }, (_, i) => ({
 export default function App() {
   const [form, setForm] = useState({ nombre: '', correo: '', boleto: '' });
   const [mensaje, setMensaje] = useState('');
-  const [boletosOcupados, setBoletosOcupados] = useState([]);
   const [numerosDisponibles, setNumerosDisponibles] = useState([]);
   const [loadingBoletos, setLoadingBoletos] = useState(true);
 
@@ -31,26 +30,29 @@ export default function App() {
 
     if (error) {
       console.error('Error al obtener boletos ocupados', error);
-      setLoadingBoletos(false); 
+      setLoadingBoletos(false);
       return;
     }
 
-    const ocupados = (data ?? []).map(entry => entry.boleto); // aseguramos que sea array
+    const ocupados = Array.isArray(data) ? data.map(entry => entry.boleto) : [];
     const disponibles = todos.filter(num => !ocupados.includes(num));
+
     setNumerosDisponibles(disponibles);
     setLoadingBoletos(false);
   };
+
 
   const handleSubmit = async e => {
   e.preventDefault();
 
   // 1. Validar si el boleto ya fue usado
-  const { data: existentes, error: errorConsulta } = await supabase
+  const { data: existentes, error: consultaError } = await supabase
     .from('Participantes')
-    .select('boleto, estado')
+    .select('boleto')
     .eq('boleto', form.boleto);
 
-  if (errorConsulta) {
+  if (consultaError) {
+    console.error('❌ Error al verificar disponibilidad:', consultaError);
     setMensaje('⚠️ Error al verificar disponibilidad. Intenta nuevamente.');
     return;
   }
@@ -61,18 +63,20 @@ export default function App() {
   }
 
   // 2. Insertar el nuevo registro como pendiente
-  const { error } = await supabase
+  const fechaRegistro = new Date().toISOString();
+  console.log({ ...form, estado: 'pendiente', fecha: fechaRegistro });
+  
+  const { error: insertError } = await supabase
     .from('Participantes')
-    .insert([{ ...form, estado: 'pendiente' }]);
+    .insert([{ ...form, estado: 'pendiente', fecha: fechaRegistro }]);
 
-  if (error) {
+  if (insertError) {
+    
     setMensaje('❌ Error al registrar. Intenta con otro número de boleto.');
   } else {
     setMensaje(
-  `✅ Participación registrada. 
-  Para confirmar tu inscripción, por favor envía el comprobante de pago al correo: ggcuellarj@yahoo.com.mx indicando tu nombre completo y el número de boleta seleccionado (${form.boleto}). 
-  Recibirás una confirmación cuando se verifique el pago.`
-);
+      `✅ Participación registrada.\nPara confirmar tu inscripción, por favor envía el comprobante de pago al correo: ggcuellarj@yahoo.com.mx indicando tu nombre completo y el número de boleta seleccionado (${form.boleto}).\nRecibirás una confirmación cuando se verifique el pago.`
+    );
 
     setForm({ nombre: '', correo: '', boleto: '' });
     obtenerBoletos(); // 🔄 Actualiza los boletos disponibles
@@ -84,11 +88,11 @@ useEffect(() => {
 }, []);
 
   return (
-   <div className="max-w-md mx-auto p-4 text-center font-sans overflow-y-auto max-h-[95vh]">
+   <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 px-4 py-6">
       <img src="/logo.png" alt="Logo" className="mx-auto w-24 mb-2" />
-      <h1 className="text-2xl font-bold mb-2">🎁 Rifa de Biblioteca de Masonería</h1>
-      <p className="text-sm mb-4">Participa completando el formulario. ¡Buena suerte!</p>
+      <h1 className="text-2xl font-bold mb-2">🎁 Gran Rifa de una biblioteca masónica”, para financiar la elaboración del busto de Manuel Ancízar, que será instalado en los jardines de la casa Koop, con ocasión del cincuentenario de nuestro taller que se celebrará en agosto del año entrante</h1>
 
+      <p className="text-sm mb-4">Participa completando el formulario. ¡Buena suerte!</p>
       {/* Galería de libros */}
    <div className="grid grid-cols-3 gap-2 p-2">
   {libros.map(libro => (
@@ -105,7 +109,7 @@ useEffect(() => {
 
 {/* Información de pago */}
 <div className="my-6 text-center">
-  <p className="text-sm font-semibold mb-2">Valor por boleta: <span className="text-green-600">$50.000 COP</span></p>
+  <p className="text-sm font-semibold mb-2">Valor por boleta: <span className="text-green-600">$70.000 COP</span></p>
   <img
     src="/qr_pago.png"
     alt="Código QR para pago"
