@@ -90,8 +90,15 @@ useEffect(() => {
   return (
    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 px-4 py-6">
       <img src="/logo.png" alt="Logo" className="mx-auto w-24 mb-2" />
-      <h1 className="text-2xl font-bold mb-2">🎁 "Gran Rifa de una biblioteca masónica”. Propósito: financiar la elaboración del busto de Manuel Ancízar, que será instalado en los jardines de la casa Koop, con ocasión del cincuentenario de nuestro taller que se celebrará en agosto del año entrante</h1>
-
+      <h1 className="text-2xl font-bold mb-2">🎁 "Gran Rifa de una biblioteca masónica”. </h1>
+      <p className="text-sm font-gray-700 mb-4">
+        Propósito: financiar la elaboración del busto de Manuel Ancízar, que será instalado en los jardines de la casa Koop, con ocasión del cincuentenario de nuestro taller que se celebrará en agosto del año entrante
+      </p>
+      <div className="bg-yellow-100 border border-yellow-300 p-3 rounded text-sm my-4 text-left">
+        <p><strong>🎟 Fecha de la rifa:</strong> Sábado 10 de agosto de 2025</p>
+        <p><strong>🧮 Juega con:</strong> El resultado de la Lotería de Boyacá (últimos dos dígitos del primer premio)</p>
+        <p><strong>🎁 Entrega del premio:</strong> Lunes 11 de agosto de 2025 mediante entrega personal o envío nacional</p>
+      </div>
       <p className="text-sm mb-4">Participa completando el formulario. ¡Buena suerte!</p>
       {/* Galería de libros */}
    <div className="grid grid-cols-3 gap-2 p-2">
