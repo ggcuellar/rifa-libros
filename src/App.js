@@ -90,7 +90,7 @@ useEffect(() => {
   return (
    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 px-4 py-6">
       <img src="/logo.png" alt="Logo" className="mx-auto w-24 mb-2" />
-      <h1 className="text-2xl font-bold mb-2">🎁 Gran Rifa de una biblioteca masónica”, para financiar la elaboración del busto de Manuel Ancízar, que será instalado en los jardines de la casa Koop, con ocasión del cincuentenario de nuestro taller que se celebrará en agosto del año entrante</h1>
+      <h1 className="text-2xl font-bold mb-2">🎁 "Gran Rifa de una biblioteca masónica”. Propósito: financiar la elaboración del busto de Manuel Ancízar, que será instalado en los jardines de la casa Koop, con ocasión del cincuentenario de nuestro taller que se celebrará en agosto del año entrante</h1>
 
       <p className="text-sm mb-4">Participa completando el formulario. ¡Buena suerte!</p>
       {/* Galería de libros */}
